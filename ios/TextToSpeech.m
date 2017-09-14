@@ -32,6 +32,11 @@ RCT_EXPORT_MODULE()
         _ducking = false;
     }
 
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord
+       withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker
+       error:nil];
+    // [[AVAudioSession sharedInstance] setActive:YES error:nil];
+
     return self;
 }
 
@@ -56,7 +61,7 @@ RCT_EXPORT_METHOD(speak:(NSString *)text
     if (_defaultRate) {
         utterance.rate = _defaultRate;
     }
-    
+
     if (_defaultPitch) {
         utterance.pitchMultiplier = _defaultPitch;
     }
@@ -162,6 +167,7 @@ RCT_EXPORT_METHOD(setDefaultRate:(float)rate
 }
 
 RCT_EXPORT_METHOD(setDefaultPitch:(float)pitch
+                  skipTransform:(BOOL *)skipTransform // not used, compatibility with Android native module signature
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
